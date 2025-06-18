@@ -5,14 +5,14 @@ Project defense
 
 1. Data Acquisition - download.sh  
 - Purpose: Downloads scRNA-seq data from different bee castes from NCBI SRA.  
-- Tools: SRA Toolkit (`fasterq-dump`).  
+- Tools: SRA Toolkit (fasterq-dump).  
 - Actions:  
-  - Fetches raw `.fasta` files.  
+  - Fetches raw .fasta files.  
   - Converts to FASTQ format for downstream processing.  
 
 2. Compression - gzip.sh  
 - Purpose: Optimizes storage and I/O efficiency.  
-- Action: Compresses FASTQ files using `gzip`.  
+- Action: Compresses FASTQ files using gzip.  
 
 3. Data Preprocessing - Snakefile_trim1  
 - Purpose: Quality control and adapter removal.  
