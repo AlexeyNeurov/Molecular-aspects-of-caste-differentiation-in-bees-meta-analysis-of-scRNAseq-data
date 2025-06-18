@@ -1,0 +1,33 @@
+import os
+import glob
+
+# Сбор имен образцов
+samples = set()
+for filepath in glob.glob("row_data/*.fastq.gz"):
+    sample_name = os.path.basename(filepath).split('.')[0]  # Извлекаем имя образца без расширения
+    samples.add(sample_name)
+
+# Правило all
+rule all:
+    input: expand("trimmed_data/{sample}.fastq.gz", sample=samples)
+
+# Правило trim
+rule trim:
+    input:
+        in1="row_data/{sample}.fastq.gz"  # Входной файл без _1
+    output:
+        o1="trimmed_data/{sample}.fastq.gz"  # Выходной файл без _1
+    run:
+        # Проверка наличия входного файла
+        if not os.path.exists(input.in1):
+            raise FileNotFoundError(f"Input file for sample {wildcards.sample} not found.")
+
+        # Выполнение команды trim
+        shell(
+            "echo 'Trimming single-end reads for sample {wildcards.sample}'; "
+            "fastp -i {input.in1} -o {output.o1}"
+        )
+
+        # Удаление исходного файла
+        os.remove(input.in1)
+
